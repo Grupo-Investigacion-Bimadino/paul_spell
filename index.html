@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrector de Palabras</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #333;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea:focus {
+            outline: none;
+            border: 2px solid #6a11cb;
+        }
+
+        button {
+            padding: 15px 25px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #ff5722;
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .result p {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .error {
+            color: #ff5722;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        footer img {
+            width: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌟 Corrector de Palabras 🌟</h1>
+    </header>
+
+    <main>
+        <textarea id="texto" placeholder="Escribe tu texto aquí..."></textarea>
+        <button id="corregir">🔍 Corregir Texto</button>
+        <div class="result" id="resultado"></div>
+    </main>
+
+    <footer>
+        <p>💡 Powered by <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JS logo"> JavaScript</p>
+    </footer>
+
+    <script>
+        const palabrasCorrectas = [
+            "abrazo", "aceite", "acción", "actitud", "actor",
+    "adiós", "adulto", "aeropuerto", "agosto", "agua",
+    "alegre", "alegría", "alfombra", "alimento", "altura",
+    "amable", "amante", "amistoso", "anillo", "aniversario",
+    "animal", "antiguo", "anuncio", "aparato", "aplauso",
+    "apoyo", "árbol", "archivo", "arena", "arma",
+    "artículo", "ascensor", "asiento", "asociación", "atardecer",
+    "atmósfera", "atracción", "autor", "avenida", "aventura",
+    "bailar", "baile", "bajo", "balcón", "banco",
+    "barco", "basura", "bebida", "belleza", "beso",
+    "biblioteca", "bicicleta", "billete", "bolsa", "bolsillo",
+    "bondad", "botella", "broma", "buena", "bueno",
+    "cálculo", "calidad", "calle", "calor", "cama",
+    "camino", "camisa", "campana", "canción", "candidatura",
+    "característica", "carne", "carta", "cartera", "casamiento",
+    "catedral", "cazuela", "celebración", "cena", "cerca",
+    "cerdo", "cerebro", "cereza", "cerro", "champú",
+    "chico", "cielo", "científico", "cierto", "cigarrillo",
+    "ciudadano", "civilización", "claridad", "clase", "clima",
+    "coches", "cocina", "cómodo", "complejo", "complicado",
+    "computadora", "comunidad", "concierto", "conclusión", "confianza",
+    "conocido", "consejo", "contabilidad", "contacto", "contemplar",
+    "contexto", "continuo", "contrato", "conversación", "copa",
+    "corbata", "corto", "cosa", "creativo", "crisis",
+    "cuadro", "cuadro", "cualidad", "cuenta", "cuento",
+    "cuerpo", "cultura", "curioso", "curso", "cálido",
+    "danza", "deber", "dedo", "delicioso", "democracia",
+    "deseo", "despertar", "destino", "día", "dinero",
+    "disciplina", "diseño", "distancia", "diversión", "división",
+    "doctor", "documento", "dolor", "domicilio", "don",
+    "educación", "efecto", "ejemplo", "ejercicio", "electricidad",
+    "elegancia", "elemento", "emoción", "empresa", "encuentro",
+    "energía", "enfermedad", "enlace", "entusiasmo", "época",
+    "error", "escalera", "escena", "esfuerzo", "espacio",
+    "espectáculo", "esperanza", "espíritu", "estación", "estado",
+    "estilo", "estructura", "estudiante", "estudio", "éxito",
+    "experiencia", "explicación", "exploración", "expresión", "familia",
+    "famoso", "fantasía", "felicidad", "fianza", "fidelidad",
+    "figura", "filosofía", "final", "física", "flor",
+    "fondo", "forma", "fotografía", "frase", "fresco",
+    "frontera", "función", "futuro", "gafas", "galería",
+    "ganancia", "gente", "gesto", "globo", "gracia",
+    "grupo", "guitarra", "habitación", "hábito", "hermoso",
+    "herramienta", "hielo", "hija", "hijo", "historia",
+    "hogar", "horizonte", "hospital", "hoteles", "hueco",
+    "hueso", "humanidad", "humildad", "humor", "idea",
+    "idioma", "iglesia", "iluminación", "imagen", "imaginación",
+    "impresión", "importancia", "impulso", "incidente", "independencia",
+    "industria", "infancia", "información", "ingenio", "inicio",
+    "insecto", "instante", "instrumento", "inteligencia", "interacción",
+    "interés", "internet", "invierno", "invitación", "isla",
+    "jardín", "jefe", "joven", "juguete", "juntos",
+    "junta", "justicia", "lámpara", "largo", "latino",
+    "lección", "lectura", "letra", "libertad", "líder",
+    "lindo", "líquido", "llama", "llamada", "llanto",
+    "luz", "magia", "mago", "maíz", "mañana",
+    "mantequilla", "margarita", "mariposa", "marzo", "mayo",
+    "mejor", "memoria", "mensaje", "mercado", "mesa",
+    "método", "milagro", "minuto", "mirada", "moderno",
+    "momento", "montaña", "moral", "mundo", "nacionalidad",
+    "naturaleza", "navegación", "necesidad", "negocio", "niño",
+    "nombre", "norte", "número", "nutrición", "obediencia",
+    "objeto", "obligación", "observación", "ocasión", "oído",
+    "ola", "olor", "opción", "optimismo", "oración",
+    "orden", "orgullo", "oro", "oscuridad", "página",
+    "país", "pájaro", "palacio", "palma", "pan",
+    "pánico", "pantalla", "paquete", "par", "paraíso",
+    "pareja", "párrafo", "pasión", "paso", "paz",
+    "película", "pelota", "pelo", "pena", "pendiente",
+    "pensamiento", "perdón", "periodo", "personaje", "personalidad",
+    "piedra", "pintura", "pisos", "plano", "plaza",
+    "plazo", "pluma", "poesía", "poder", "población",
+    "poeta", "política", "pollos", "posibilidad", "práctica",
+    "premio", "preocupación", "presente", "prestigio", "príncipe",
+    "principio", "problema", "proceso", "producto", "profesor",
+    "programa", "progreso", "promesa", "propiedad", "proyecto",
+    "prueba", "pueblo", "puerta", "puerto", "punto",
+    "puño", "química", "raíz", "rama", "realidad",
+    "reacción", "reflejo", "regalo", "reino", "relación",
+    "reloj", "respuesta", "reto", "riqueza", "risas",
+    "ruta", "sabor", "sala", "salida", "salud",
+    "sangre", "secreto", "seguridad", "señal", "serpiente",
+    "silla", "silencio", "sinceridad", "sistema", "solución",
+    "sueño", "talento", "tarea", "tecnología", "temor",
+    "tiempo", "tierra", "tormenta", "trabajador", "tradición",
+    "trato", "tren", "triunfo", "tropa", "universidad",
+    "vacaciones", "valor", "viento", "violencia", "vista",
+    "vivienda", "voluntad", "voz", "vuelta", "zapatilla", "hola", "quiero", "programar", "función", "corregir",
+    "amigo", "casa", "gato", "perro", "árbol",
+    "comida", "importante", "familia", "escuela", "niño",
+    "amor", "feliz", "gracias", "tiempo", "hoy",
+    "mujer", "hombre", "ciudad", "noche", "día",
+    "trabajo", "padre", "madre", "hermano", "hermana",
+    "agua", "fuego", "tierra", "aire", "cielo",
+    "mar", "montaña", "camino", "puerta", "ventana",
+    "silla", "mesa", "luz", "libro", "papel",
+    "dinero", "corazón", "piedra", "flor", "sol",
+    "luna", "estrella", "niña", "joven", "viejo",
+    "amistad", "verdad", "mentira", "paz", "guerra",
+    "esperanza", "silencio", "música", "arte", "pintura",
+    "palabra", "voz", "sonido", "vista", "sentido",
+    "olor", "sabor", "vida", "muerte", "cambio",
+    "idea", "creación", "invención", "descubrimiento", "cultura",
+    "historia", "presente", "futuro", "pasado", "memoria",
+    "olvido", "sueño", "realidad", "naturaleza", "animal",
+    "planta", "humano", "cuerpo", "mente", "alma",
+    "espíritu", "emociones", "risa", "llanto", "alegría",
+    "tristeza", "ira", "miedo", "sorpresa", "desesperación",
+    "pueblo", "país", "mundo", "continente", "región",
+    "persona", "gente", "grupo", "sociedad", "comunidad",
+    "estado", "gobierno", "ley", "justicia", "derecho",
+    "educación", "enseñanza", "aprendizaje", "conocimiento", "sabiduría",
+    "experiencia", "inteligencia", "creatividad", "habilidad", "destreza",
+    "trabajador", "profesor", "estudiante", "científico", "médico",
+    "artista", "escritor", "actor", "músico", "pintor",
+    "deporte", "juego", "diversión", "aventura", "viaje",
+    "transporte", "vehículo", "carro", "bicicleta", "avión",
+    "barco", "tren", "autobús", "camión", "motor",
+    "máquina", "herramienta", "objeto", "material", "producto",
+    "mercado", "tienda", "compra", "venta", "negocio",
+    "economía", "industria", "tecnología", "información", "computadora",
+    "teléfono", "televisión", "radio", "internet", "red",
+    "comunicación", "mensaje", "correo", "palabra", "frase",
+    "texto", "libro", "revista", "periódico", "historia",
+    "cuento", "novela", "poesía", "ensayo", "discurso",
+    "conversación", "diálogo", "pregunta", "respuesta", "comentario",
+    "opinión", "idea", "pensamiento", "razón", "lógica",
+    "creencia", "fe", "religión", "espiritualidad", "filosofía",
+    "ciencia", "matemáticas", "química", "física", "biología",
+    "medicina", "psicología", "sociología", "arqueología", "historia",
+    "geografía", "política", "economía", "derecho", "arte",
+    "pintura", "música", "danza", "cine", "teatro"
+        ];
+
+        function calcularDistancia(a, b) {
+            const matriz = [];
+            for (let i = 0; i <= b.length; i++) matriz[i] = [i];
+            for (let j = 0; j <= a.length; j++) matriz[0][j] = j;
+
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    const costo = b[i - 1] === a[j - 1] ? 0 : 1;
+                    matriz[i][j] = Math.min(
+                        matriz[i - 1][j] + 1,
+                        matriz[i][j - 1] + 1,
+                        matriz[i - 1][j - 1] + costo
+                    );
+                }
+            }
+            return matriz[b.length][a.length];
+        }
+
+        function sugerirPalabra(palabra) {
+            let mejorCoincidencia = null;
+            let menorDistancia = Infinity;
+
+            palabrasCorrectas.forEach(palabraCorrecta => {
+                const distancia = calcularDistancia(palabra, palabraCorrecta);
+                if (distancia < menorDistancia) {
+                    menorDistancia = distancia;
+                    mejorCoincidencia = palabraCorrecta;
+                }
+            });
+
+            return menorDistancia <= 2 ? mejorCoincidencia : null;
+        }
+
+        document.getElementById("corregir").addEventListener("click", () => {
+            const texto = document.getElementById("texto").value;
+            const palabras = texto.split(/\s+/);
+            const resultado = document.getElementById("resultado");
+            resultado.innerHTML = "";
+
+            palabras.forEach(palabra => {
+                const sugerencia = sugerirPalabra(palabra);
+                if (sugerencia && sugerencia !== palabra) {
+                    resultado.innerHTML += `<p>La palabra <span class="error">${palabra}</span> podría ser <strong>${sugerencia}</strong>.</p>`;
+                } else if (!sugerencia) {
+                    resultado.innerHTML += `<p>La palabra <span class="error">${palabra}</span> no tiene sugerencias cercanas.</p>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

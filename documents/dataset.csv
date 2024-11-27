@@ -1,0 +1,31 @@
+id;texto;etiqueta;categoria
+1;La inteligencia artifial es el campo que busca desarrollar maquinas que piensen.;incorrecto;tecnologia
+2;La inteligencia artificial es el campo que busca desarrollar maquinas que piensen.;correcto;tecnologia
+3;La inteligencia artficial busca crear maquinas.;incorrecto;tecnologia
+4;El aprendizaje profuno ayuda a mejorar los modelos de prediccion.;incorrecto;tecnologia
+5;El aprendizaje profundo ayuda a mejorar los modelos de predicción.;correcto;tecnologia
+6;  El aprendizaje profundo mejora la inteligencia artificial.  ;incorrecto;tecnologia
+7;La biología estudia los seres vivos, incluyendo microorganismos, animales y plantas.;correcto;biologia
+8;La biologia estudia los seres vivos, incluyendo microoganismos y plantas.;incorrecto;biologia
+9;La medicina avanzada está revolucionando el tratamiento de enfermedades crónicas.;correcto;medicina
+10;La medicina avansada está revolucionando el tratamiento de enfermedades crónicas.;incorrecto;medicina
+11;La medicina preventiva ayuda a reducir el costo de tratamiento.;correcto;medicina
+12;La medicína preventiva ayuda reducir el costo de tratamiento.;incorrecto;medicina
+13;Las matemáticas son la base de la inteligencia artificial.;correcto;matematicas
+14;Las matemáticas son la base de la inteligencia artifical.;incorrecto;matematicas
+15;La geometría estudia las formas y estructuras.;correcto;matematicas
+16;La geometria estudia las formas y estructura.;incorrecto;matematicas
+17;El coche volador fue presentado en el año 2022.;correcto;tecnologia
+18;El coche volador fue presentado en el año 2022   .;incorrecto;tecnologia
+19;La agricultura moderna se basa en el uso de tecnologías avanzadas.;correcto;agricultura
+20;La agricultura moderna se basa en el uso de tecnologias avanzadas.;incorrecto;agricultura
+21;La astronomía estudia los cuerpos celestes.;correcto;astronomia
+22;La astronomia estudia los cuerpos celestes.;incorrecto;astronomia
+23;El universo está en expansión.;correcto;astronomia
+24;El universo esta en expanción.;incorrecto;astronomia
+25;La física cuántica describe el comportamiento de las partículas a nivel subatómico.;correcto;fisica
+26;La fisica cuantica describe el comportamiento de las particulas a nivel subatomico.;incorrecto;fisica
+27;La química orgánica estudia las moléculas basadas en carbono.;correcto;quimica
+28;La quimica organica estudia las moleculas basadas en carbono.;incorrecto;quimica
+29;El ADN es la molécula que contiene la información genética de los seres vivos.;correcto;biologia
+30;El adn es la molecula que contiene la informacion genetica de los seres vivos.;incorrecto;biologia
